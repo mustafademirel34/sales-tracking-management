@@ -1,0 +1,299 @@
+
+
+<div class="card mb-4 shadow-lg">
+    <div class="card-body">
+       <div class="row">
+          <div class="col-12 col-sm-2">
+            <button type="button" class="btn  btn-primary btn m-1 py-2" (click)="gotoHome()">
+               <div class="d-flex">
+                 <img src="../../assets/icons/home.svg" width="16">
+                 <span class="px-1">Anasayfa</span>
+               </div>
+             </button>
+          </div>
+          <div class="col-12 col-sm-5">
+             <div class="d-flex justify-content-start">
+                <Span class="mx-3">Oluşturulma:</Span>
+                <input [disabled]="true" type="date" class="form-control" id="whenWasCreated" name="whenWasCreated" [value]="delivery.whenWasCreated" [(ngModel)]="delivery.whenWasCreated" >
+             </div>
+            
+          </div>
+          <div class="col-12 col-sm-5">
+             <div class="d-flex justify-content-start">
+                <Span class="mx-3">{{ detailBaslikNe() }}</Span>
+                <input type="date" class="form-control" id="deliveryTime" name="deliveryTime" [value]="delivery.deliveryTime" [(ngModel)]="delivery.deliveryTime" >
+          
+             </div>
+          </div>
+        </div>
+    </div>
+ </div>
+ 
+ 
+ <div class="row">
+     <div class="col-12 col-sm-3">
+        <div class="card shadow-lg">
+           <div class="card-header">
+             <div *ngIf="stageId == 0">
+                <h5>YENİ KAYIT</h5>
+             </div>
+             <div *ngIf="stageId != 0">
+                <h5>Temel Satış Bilgileri - #{{stageId}} </h5>
+             </div>
+           </div>
+           <div class="card-body">
+ 
+            
+              <form>
+                
+                <div class="mb-3">
+                   <label for="stageId" class="form-label">Ad Soyad</label>
+                   <input type="text" class="form-control" id="stageId" name="stageId" [(ngModel)]="delivery.customerName">
+                </div>
+                <div class="mb-3">
+                   <label for="phone" class="form-label">Telefon</label>
+                   <input type="tel" [limitToMax]="10" class="form-control" id="phone" name="phone" [(ngModel)]="delivery.phone">
+                   <button class="btn btn-sm" [ngClass]="musteriVarMi ? 'bg-success-subtle' : 'bg-primary-subtle'" type="button" (click)="getCustomerFromPhone()">{{ musteriVarMi ? 'Kayıt Bulundu' : 'Müşteri Ara' }}</button>   
+                </div>
+                 <div class="mb-3">
+                   <label for="customerNotes" class="form-label">Müşteri Notları</label>
+                   <textarea class="form-control" id="customerNotes" name="customerNotes" [(ngModel)]="delivery.customerNotes"></textarea>
+                 </div>
+ 
+                 <div class="mb-3">
+                   <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="radio" name="stageOptions" id="radioTeslimat" [(ngModel)]="delivery.state" value="Teslimat">
+                     <label class="form-check-label" for="radioTeslimat">Teslimat</label>
+                   </div>
+                   <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="radio" name="stageOptions" id="radioBakım" [(ngModel)]="delivery.state" value="Eşya Bakım">
+                     <label class="form-check-label" for="radioBakım">Eşya Bakım</label>
+                   </div>
+                   <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="stageOptions" id="radioAlım" [(ngModel)]="delivery.state" value="Eşya Alım">
+                      <label class="form-check-label" for="radioAlım">Eşya Alım</label>
+                    </div>
+                   <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="radio" name="stageOptions" id="radioSipariş" [(ngModel)]="delivery.state" value="Sipariş">
+                     <label class="form-check-label" for="radioSipariş">Sipariş</label>
+                   </div>
+                 </div>
+                 
+ 
+                 <div class="mb-3">
+                  
+                       <label for="address" class="form-label">Tam Adres</label>
+                       <textarea class="form-control" id="address" name="address" [(ngModel)]="delivery.address"></textarea>
+                
+                 </div>
+ 
+                 <div class="pb-5">
+                    <label for="notes" class="form-label">Teslimat&Sipariş Notları</label>
+                    <textarea class="form-control" id="notes" name="notes" [(ngModel)]="delivery.deliveryNotes"></textarea>
+                 </div>
+ 
+              </form>
+           </div>
+        </div>
+     </div>
+ 
+     <div class="col-12 col-sm-6">
+       <div class="card shadow-lg">
+          
+          <div class="card-header">
+             <h5>Satış Formu</h5>
+          </div>
+          <div class="card-body">
+             <table class="table">
+                <thead>
+                  <tr>
+                    <th>Ürün</th>
+                    <th>Cins</th>
+                    <th style="width: 10px!important;">Adet</th>
+                    <th>Fiyat</th>
+                    <th>İskonto</th>
+                    <th>*</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <tr>
+                    <td class="px-1">
+                       <input type="text" class="form-control" id="itemStageName" name="itemStageName"  [(ngModel)]="itemStageName"> <!--(input)="validatePhoneNumber()"-->
+                    </td>
+                    <td class="px-1">
+                      <input type="text" class="form-control" id="itemStageType" name="itemStageType"  [(ngModel)]="itemStageType"> <!--(input)="validatePhoneNumber()"-->
+                   </td>
+                    <td class="px-1">
+                       <input type="number" class="form-control" id="itemStageAmount" name="itemStageAmount" [(ngModel)]="itemStageAmount" > <!--(input)="validatePhoneNumber()"-->
+                    </td>
+                    <td class="px-1">
+                       <input type="number" class="form-control" id="itemStagePrice" name="itemStagePrice"  [(ngModel)]="itemStagePrice"> <!--(input)="validatePhoneNumber()"-->
+                    </td>
+                    <td class="px-1">
+                       <input type="number" class="form-control" id="itemStageDiscount" name="itemStageDiscount"  [(ngModel)]="itemStageDiscount"> <!--(input)="validatePhoneNumber()"-->
+                    </td>
+                    <td class="px-1">
+                       <button class="btn btn-primary" (click)="satirEkle()">
+                        <img src="../../assets/icons/addwhite.svg" width="16">
+                       </button>
+                    </td>
+                 </tr>
+              
+                  <tr *ngFor="let satir of satirlar">
+     
+                    <td class="px-1">{{ satir.itemStageName }}</td>
+                    <td class="px-1">{{ satir.itemStageType }} adet</td>
+                    <td class="px-1">{{ satir.itemStageAmount }} adet</td>
+                    <td class="px-1">{{ satir.itemStagePrice }} ₺</td>
+                    <td class="px-1">{{ satir.itemStageDiscount }} ₺</td>
+                    <td class="px-1">
+                      <button class="btn btn-danger" (click)="satirSil(satir.id)">
+                        <img src="../../assets/icons/deletewhite.svg" width="16">
+                      </button>
+                    </td>    
+                  </tr>
+                 
+                </tbody>  
+              </table>
+            
+ 
+ 
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Toplam</th>
+                    <th scope="col">İndirim</th>
+                    <th scope="col">Ödenecek Tutar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{{toplamFiyat}} ₺</th>
+                    <td>{{toplamIskonto}} ₺</td>
+                    <td><h4>{{toplamFiyat-toplamIskonto}} ₺</h4></td>
+                  </tr>
+                </tbody>
+              </table>
+             
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Ödeme Al</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th><div class="input-group">
+                      <div class="input-group-prepend">
+                         <div class="input-group-text">₺</div>
+                      </div>
+                      <input type="number" class="form-control" id="itemPrice" name="itemPrice" [(ngModel)]="delivery.itemPrice">
+                   </div>
+                </th>
+                    <td>
+                      <select class="form-select" id="paymentMethod" name="paymentMethod" [(ngModel)]="delivery.paymentMethod">
+                        <option value="Belirlenmemiş" [ngValue]="'Belirlenmemiş'">Belirlenmemiş</option>
+                        <option value="Nakit" [ngValue]="'Nakit'">Nakit</option>
+                        <option value="Havale" [ngValue]="'Havale'">Havale</option>
+                        <option value="KK&Nakit(Detay)" [ngValue]="'KK&Nakit(Detay)'">KK&Nakit(Detay)</option>
+                        <option value="Kredi Kartı (Tek Çekim)" [ngValue]="'Kredi Kartı (Tek Çekim)'">Kredi Kartı (Tek Çekim)</option>
+                        <option value="Kredi Kartı (Taksit)" [ngValue]="'Kredi Kartı (Taksit)'">Kredi Kartı (Taksit)</option>
+                      </select></td>
+                    <td> <button type="button" class="btn btn bg-primary-subtle class" (click)="OdemeYap()">Ödeme Al</button></td>
+                  </tr>
+                </tbody>
+              </table>
+ 
+              <div class="mb-3">
+                <label for="notes" class="form-label">Ödeme Notları</label>
+                <textarea class="form-control" id="paymentNotes" name="paymentNotes" [(ngModel)]="delivery.paymentNotes"></textarea>
+             </div>
+             
+ 
+           
+          </div>
+ 
+     </div>
+     
+    </div>
+ 
+ 
+ 
+ 
+     <div class="col-12 col-sm-3">
+         <div class="card shadow-lg">
+             <div class="card-header">
+                 <h5>Aksiyonlar</h5>
+             </div>
+             <div class="card-body">
+ 
+          
+   
+                <div *ngIf="stageId != 0 && !delivery.isCompleted" class="form-check form-switch">
+                   <input (change)="onSwitchChange()" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="this.delivery.isCompleted">
+                   <label class="form-check-label" for="flexSwitchCheckDefault">Tamamlandı</label>
+                 </div>
+ 
+                <div class="d-flex justify-content-around mt-4" *ngIf="!delivery.isCompleted && stageId != 0"> 
+ 
+                    
+                   <button type="button" (click)="updateDelivery()" class="btn btn-sm bg-warning-subtle">Güncelle</button>  
+                   <button type="button" class="btn btn-sm bg-info-subtle" (click)="printDeliveryReceipt()">Fiş Çıkar</button>
+                 </div>
+ 
+                <hr> 
+ 
+                <div class="d-flex justify-content-around mt-4" *ngIf="stageId != 0"> 
+                <button type="button"(click)="deleteDelivery()" class="btn btn-sm bg-danger-subtle">İptal Et / Sil * Kalıcı</button>
+              </div>
+      
+ 
+                <hr> 
+ 
+                <label *ngIf="delivery.isCompleted">TAMAMLANAN İŞLEMLER DEĞİŞTİRİLEMEZ. (Bu kural değiştirilebilir?)</label>
+ 
+                <hr>
+ 
+                
+                <div class="d-flex justify-content-around" *ngIf="stageId == 0">
+                   <button (click)="YeniTeslimEkle()" type="button" class="btn btn-sm bg-primary-subtle">Yeni Ekle</button>
+                </div>
+ 
+ 
+                <hr>
+ 
+ 
+                
+                <label *ngIf="!delivery.isCompleted && stageId!=0" class="mb-3">Ertele</label>
+                <div class="d-flex justify-content-around">
+                   <ng-container  *ngIf="stageId != 0">
+                      <ng-container *ngIf="!delivery.isCompleted">
+                         <button type="button" (click)="isiErtele(1)" class="btn btn-sm bg-primary-subtle">1 Gün</button>
+                         <button type="button"  (click)="isiErtele(2)" class="btn btn-sm bg-primary-subtle">2 Gün</button>
+                         <button type="button" (click)="isiErtele(3)"class="btn btn-sm bg-primary-subtle">3 Gün</button>
+                         <button type="button" (click)="isiErtele(6)" class="btn btn-sm bg-primary-subtle">1 Hafta</button>
+                      </ng-container>
+                   </ng-container>
+                
+                </div>
+                
+                <hr class="mt-4">
+
+                <button type="button" (click)="routest()" class="btn btn-sm bg-warning-subtle">ROUTE TEST</button>  
+ 
+             </div>
+         </div>
+ 
+ 
+ 
+ 
+ 
+          </div>
+ 
+ 
+      
+     </div>
+ 
+ 

@@ -1,0 +1,13 @@
+.a4-page {
+    width: 210mm; /* A4 kağıdının genişliği */
+    height: 297mm; /* A4 kağıdının yüksekliği */
+    overflow: hidden; /* İçeriğin sınırları dışına taşmasını engelle */
+  }
+  
+    .special-row {
+      height: 50%; /* Her bir row yarım A4 kağıdının yüksekliğini kaplayacak */
+    }
+  
+    .special-col {
+      height: 100%; /* Sütunları row'un tam yüksekliğine genişlet */
+    }

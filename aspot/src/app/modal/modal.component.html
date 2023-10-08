@@ -1,0 +1,17 @@
+<div>
+    <div class="modal-header">
+      <h5 class="modal-title">{{baslik}}</h5>
+    </div>
+    <div class="modal-body pb-0">
+      <ng-container *ngFor="let item of formErrorList"><p class="text-dark">{{ item }} </p></ng-container >
+    </div>
+    <div class="modal-footer">
+     <ng-container *ngIf="secenekolacakmi">
+      <button type="button" class="btn btn-sm btn-primary" (click)="confirm()">Evet</button>
+      <button type="button" class="btn btn-sm btn-warning" (click)="cancel()">Hayır</button>
+     </ng-container>
+     <ng-container *ngIf="!secenekolacakmi">
+      <button type="button" class="btn btn-sm btn-primary" (click)="confirm()">Tamam</button>
+     </ng-container>
+    </div>
+  </div>

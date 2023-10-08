@@ -1,0 +1,396 @@
+<div class="row" >
+
+  <div *ngIf="settingsOn else settingsOf" class="col-12 col-sm-9">
+    <div class="card shadow-lg">
+      <div class="card-header">
+        Ayarlar
+      </div>
+      <div class="card-body">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" (change)="onToggleChange($event)">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Araç Ayarlama Seçeneklerini Göster</label>          
+        </div>
+        <hr class="my-4">   
+        <div class="input-group">
+          <span class="input-group-text">Kullanıcı Adı</span>
+          <input type="text" aria-label="username" class="form-control" [(ngModel)]="username">
+          <span class="input-group-text">Şifre</span>
+          <input type="text" aria-label="password" class="form-control" [(ngModel)]="password">
+          <button type="button" class="btn  btn-light btn-sm" (click)="updateUswPsw()">
+            <div class="d-flex">
+              <img src="../../assets/icons/ok.svg" width="20">
+              <span class="px-1">Değiştir</span>
+            </div>
+          </button>
+        </div>
+        <hr class="my-4">
+      </div>
+    </div>
+  </div>
+
+  <ng-template #settingsOf>
+
+    <div *ngIf="takvimmodudurum" class="col-12 col-sm-9">
+      <div class="card shadow-lg">
+        <div class="card-header">Takvim</div>
+        <div class="card-body">
+          <div class="calendar-container">
+            <div class="calendar-header d-flex justify-content-between mb-5">
+              <button class="btn btn-primary btn-sm" (click)="previousMonth()">Geri</button>
+              <h2 class="calendar-title">{{ currentDate.locale('tr').format('MMMM YYYY') }}</h2>
+              <button class="btn btn-primary btn-sm" (click)="nextMonth()">İleri</button>
+            </div>
+            
+            <table class="calendar-table table table-bordered">
+              <thead>
+                <tr>
+                  <th *ngFor="let dayName of dayNames"><h5>{{ dayName }}</h5></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let week of monthDays | chunk: 7">
+                  <td *ngFor="let day of week"
+                      [ngClass]="{
+                        'current-month-day': day.isCurrentMonth,
+                        'other-month-day': !day.isCurrentMonth
+                      }">
+                    <div class="day-wrapper">
+                      <h6 class="day-number">{{ day.day }}</h6>
+                      <!-- <span class="full-date">{{ day.fullDate }}</span>
+         -->
+                      <ng-container class="data" *ngFor="let dd of isDeliveryDay(day.fullDate)">
+              
+                        <button type="button" (click)="goToDetailPage(dd.stageId,true)" class="btn rounded-circle rounded-btn p-0"
+                        [ngClass]="{
+                          'bg-primary-subtle': dd.state === 'Teslimat', 
+                          'bg-info-subtle': dd.state === 'Sipariş',
+                          'bg-warning-subtle': dd.state === 'E.Alım',
+                          'bg-danger-subtle': dd.state === 'E.Bakım'
+                        }">
+                          <small>{{dd.stageId}}</small>
+                        </button>
+                    
+                        <button type="button" (click)="goToDetailPage(dd.stageId,true)"
+                          class="btn btn-sm p-1" [ngClass]="{
+                          'bg-info-subtle': dd.state === 'Teslimat', 
+                          'bg-warning-subtle': dd.state === 'Sipariş',
+                          'bg-danger-subtle': dd.state === 'E.Alım',
+                          'bg-secondary-subtle': dd.state === 'E.Bakım'}">
+                          <small class="text-primary">{{MainItemNameEdit(dd.itemName)}}</small> 
+                        </button>
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <div *ngIf="!takvimmodudurum" class="col-12 col-sm-9" >
+      <div class="card shadow-lg">
+        <div class="card-header p-1 py-0">
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn  btn-light btn-sm m-3 py-2"  (click)="getAllData()">
+                <div class="d-flex">
+                  <img src="../../assets/icons/getall.svg" width="20">
+                  <span  class="px-2" style="padding-top:3px;">Tüm Kayıtlar</span>
+                </div>
+              </button>
+              <button type="button" class="btn  btn-light btn-sm m-3 py-2" (click)="goToDetailPageW()">
+                <div class="d-flex">
+                  <img src="../../assets/icons/add.svg" width="20">
+                  <span  class="px-2" style="padding-top:3px;">Yeni Kayıt</span>
+                </div>
+              </button>
+            
+            </div>
+            <div class="col d-flex justify-content-end">
+              <button type="button" class="btn  btn-light btn-sm m-3 py-2" (click)="YolaCikar()">
+                <div class="d-flex">
+                  <img src="../../assets/icons/delivery.svg" width="20">
+                  <span class="px-2" style="padding-top:3px;">Yola Çıkar</span>
+                </div>
+              </button>
+           
+
+              <button type="button" class="btn  btn-light btn-sm m-3 py-2" (click)="openPrintModal()">
+                <div class="d-flex">
+                  <span  class="px-2" style="padding-top:3px;">Çıktı Al</span>
+                  <img src="../../assets/icons/print.svg" width="20">
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-4">
+          <div class="row">
+            <div class="aDay">
+              <div class="row">
+                <div class="col d-flex justify-content-center">
+                  <ng-container *ngIf="!tumkayit">
+                    <div style="margin:0!important;" *ngIf="telefAra">
+                      <h5>0{{customerPhoneMain}} Müşterisi</h5>
+                    </div>
+                    <div *ngIf="!telefAra">
+                      <h5>{{BuTariheGoreAraTarihi | customDate:'dd MMMM EEEE'}}</h5>
+                    </div>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="tumkayit">
+                    <h5>TÜM KAYITLAR - TOPLAM {{this.deliveryList.length}}</h5>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col d-flex justify-content-center">
+                  <button type="button" class="btn btn-light m-2"  (click)="BuTarihiAraOncekiSonraki(false)">
+                    <div class="d-flex">
+                      <img src="../../assets/icons/left.svg" width="20">
+                      
+                    </div>
+                  </button>
+                  <button type="button" class="btn btn-light m-2"  (click)="BugununTarihiAra()">
+                    <div class="d-flex">
+                      <img src="../../assets/icons/time.svg" width="20">
+                     
+                    </div>
+                  </button>
+                  <button type="button" class="btn btn-light m-2" (click)="BuTarihiAraOncekiSonraki(true)">
+                    <div class="d-flex">
+                      <img src="../../assets/icons/right.svg" width="20">
+                   
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-9 d-flex justify-content-start">
+                  <button type="button" [ngClass]="showCompletedSure ? 'btn-dark':'btn-light'" (click)="handleButtonClick('t')" class="btn btn-sm mx-2"><img src="../../assets/icons/yesandno.svg" width="19"></button>
+                  <button [ngClass]="showEOrH&&!showCompletedSure ? 'btn-dark': 'btn-light'" type="button" (click)="handleButtonClick('e')" class="btn btn-sm mx-2">  <img src="../../assets/icons/ok.svg" width="16"></button>
+                  <button [ngClass]="!showEOrH&&!showCompletedSure ? 'btn-dark': 'btn-light'" type="button" (click)="handleButtonClick('h')" class="btn btn-sm mx-2">  <img src="../../assets/icons/not.svg" width="16"></button>   
+                  <button type="button" *ngIf="!tumkayit && telefAra" class="btn btn-light btn-sm mx-2"  (click)="MusteriyeYeniKayit()">
+                    <div class="d-flex">
+                      <img src="../../assets/icons/add2.svg" width="20">
+                      <span  class="px-2" style="padding-top:3px;">Müşteriye Ekle</span>
+                    </div>
+                  </button>
+                </div>
+                <div class="col-12 col-md-3 d-flex justify-content-end">
+
+                  
+                  <select [(ngModel)]="itemsPerPage" style="width: 65px;" class="form-select form-select-sm mx-2" aria-label="Default select example">
+                    <option selected value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                  </select>
+                  
+                    <!-- <button *ngIf="telefAra" type="button" [routerLink]="['/t/c?phone=', customerPhoneMain]" class="btn btn-sm bg-info-subtle mt-2">Müşteriye Yeni Ekle</button> -->
+
+
+  <!--(change)="convertToNumber(selectMenu.value)"-->
+
+             
+                
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+              
+
+
+
+       
+              
+              
+              
+              
+              
+
+
+              <div class="table-responsive">
+                <table class="table table-striped mt-3 table-sm">
+                  <thead class="table-light">
+                    <tr class="">
+                      <th scope="col">#</th>
+                      <th scope="col">Müşteri</th>
+                      <!-- <th scope="col" style="width: 20%">Eşya İsmi</th> -->
+                      <th scope="col">Eşya</th>
+                      <th scope="col">Durum</th>
+                      <th scope="col">Ücret</th>
+                      <th scope="col" *ngIf="!telefAra">Oluşturulma</th>
+                      <th scope="col" *ngIf="telefAra || tumkayit">Teslim</th>
+                      <th scope="col">Tamam</th>
+                      <th scope="col" *ngIf="settingDelivery">Araç</th>
+                      <th scope="col">Detay</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let item of getItemsFromPagenation(); let i = index">
+                      <tr *ngIf="item.isCompleted == showEOrH || showCompletedSure">
+                        <th scope="row">{{ i+1 }}</th>
+                        <td>{{ item.customerName }}</td>          
+                        <td >{{MainItemNameEdit(item.itemName)}}</td>
+                        <td>{{ item.state }}</td>
+                        <td>{{MainItemPriceEdit(item.itemName)}}</td>
+                        <td *ngIf="!telefAra"><span [ngClass]="{ 'text-danger': isExpired(item.whenWasCreated), 'text-black': !isExpired(item.whenWasCreated) }">{{ getdaysAgoContent(item.whenWasCreated) }}</span></td>
+                        <td *ngIf="telefAra || tumkayit">{{ item.deliveryTime| date: 'dd.MM.yyyy' }}</td>
+                        <td  [ngClass]="item.isCompleted ? 'text-success' : 'text-danger'">{{ item.isCompleted ? 'Evet' : 'Hayır' }}</td>
+    
+                        <td *ngIf="!item.isCompleted">
+                          <span>1</span>
+                          <input type="range" [value]="getValueByStageId(item.stageId)" [id]="item.stageId" class="form-range custom-range" min="0" max="2" (change)="onRangeChange($event, item.stageId)">
+                          <span>2</span>
+                        </td>
+
+                        <td *ngIf="settingDelivery && item.isCompleted">
+                          <span>Aktarılamaz</span>
+                        </td>
+                        
+                        <td>
+                          <button type="button" class="btn btn-sm" (click)="goToDetailPage(item.stageId,false)">
+                            <img src="../../assets/icons/edit.svg" width="13">
+                            <span class="py-2 px-1" >{{item.stageId}}</span>
+                        </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <h4 class="pt-5" *ngIf="deliveryList.length == 0">
+                      İÇERİK BULUNMUYOR
+                    </h4>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="my-2">
+              <div class="d-flex justify-content-between mt-3">
+                <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" type="button" class="btn btn-sm bg-primary text-white ">
+                  <img src="../../assets/icons/left2.svg" width="17"><small class="">Geri</small>
+                </button>
+                <label class="form-label m-0">Sayfa: <b>{{ currentPage }}/{{totalPages}}</b></label>
+                <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"  type="button" class="btn btn-sm text-white bg-primary">
+                  <small class="">İleri</small> <img src="../../assets/icons/right2.svg" width="17">
+                </button>
+              </div>
+            </div>
+            <hr class="my-5"> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+    
+    <div class="col-12 col-sm-3">
+      <div class="mt-4 mt-md-0 card shadow-lg">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+           
+            <button type="button" class="btn btn-light m-1"  (click)="settings()">
+              <div class="d-flex">
+                <img src="../../assets/icons/gear.svg" width="18">
+              </div>
+            </button>
+            <button type="button" class="btn btn-light m-1"  (click)="CikisYap()">
+              <div class="d-flex">
+                <img src="../../assets/icons/logout.svg" width="18">
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+              <button type="button" class="btn btn-sm btn-light m-1" (click)="takvimmodu()">
+              <div class="d-flex">
+               <ng-container *ngIf="!takvimmodudurum else listemodu">
+                <img src="../../assets/icons/calendar.svg" width="17">
+                <span class="px-1">Takvim</span>
+               </ng-container>
+               <ng-template #listemodu>
+                <img src="../../assets/icons/list.svg" width="17">
+                <span class="px-1">Liste</span>
+               </ng-template>
+              </div>
+            </button>
+
+
+            <button class="btn btn-light btn-sm m-1" type="button" (click)="StoklaraGit()">
+              <div class="d-flex">
+                <img src="../../assets/icons/truck.svg" width="16">
+                <span class="px-1">Stok?</span>
+              </div>
+            </button>
+
+            <hr class="my-4">
+            <label for="deliveryTime" class="form-label">Tarihe Göre Arama</label>
+            <!-- ngmodelchange sırası çok önemli -->
+            <input type="date" (ngModelChange)="BuTariheGoreAraTarihi = $event" [ngModel]="BuTariheGoreAraTarihi | date:'yyyy-MM-dd'"  (ngModelChange)="BuTariheGoreAra()"class="form-control" id="BuTariheGoreTarihi" name="BuTariheGoreTarihi"/>
+         </div>
+  
+         <hr class="my-4">
+  
+        <div class="mb-4">
+          <label for="phone" class="form-label">Telefona Göre Arama</label>
+          <!--limit her şeyden önce çalışmalı -- sırasıyla eventler çalışmalı sağlıklı olabilmesi için-->
+          <input type="number" placeholder="Başında sıfır olmadan" [limitToMax]="10"  [(ngModel)]="customerPhoneMain" (ngModelChange)="this.BuTelefonaGoreAra($event)" class="form-control" id="phone" name="phone" /> <!--(input)="validatePhoneNumber()"-->
+        </div>
+  
+        <hr class="my-4">
+  
+          <div class="d-flex-inline">
+
+
+            <button type="button" class="btn  btn-light btn-sm m-1" (click)="yarinaAktar()">
+              <div class="d-flex">
+                <img src="../../assets/icons/transfer.svg" width="16">
+                <span class="px-1">Yarın Aktar</span>
+              </div>
+            </button>
+
+            <button type="button" class="btn  btn-light btn-sm m-1" (click)="testing()">
+              <div class="d-flex">
+                <span class="px-1">Just Testing</span>
+              </div>
+            </button>
+          </div>
+  
+          <hr class="my-4">
+
+          <label class="mb-2">Araç Yerleşimleri</label>
+          <div class="d-flex justify-content-between">
+            <div>
+              <h3 data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip"
+              [title]="arac1.join(', ')">   <small class="badge bg-primary"  >{{arac1.length}}</small><img src="../../assets/icons/truck.svg" width="30"></h3>
+            </div>
+           <div>
+            <h3 data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip"
+            [title]="arac2.join(', ')">  <span class="badge bg-primary">{{arac2.length}}</span><img src="../../assets/icons/truck.svg" width="30"> </h3>
+           </div>
+          </div>
+
+
+          <hr class="my-4">
+
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <ng-template #errorModal class="modal fade " id="errorModal" data-bs-backdrop="static" data-bs-animation="false">
+  
+  </ng-template>
+  
+  
+  

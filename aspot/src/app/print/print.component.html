@@ -1,0 +1,170 @@
+
+  <section *ngIf="printWhat == 1" class="container">
+  <div class="row row-cols-3 print-only">
+   
+      <table class="table table-sm table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Satış</th>
+            <th>Ücret</th>
+            <th>İşlem</th>
+            <th>Ödeme</th>
+            <th>Ne zaman</th>
+            <th>Teslim tarih</th>
+            <th>Notlar</th>
+            <th>Bilgi</th>
+            <th>Tamamlandı</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stage of deliveryList">
+            <td class="small">{{ stage.stageId }}</td>
+            <td class="small">{{MainItemNameEdit(stage.itemName)}}</td>
+            <td class="small">{{ stage.itemPrice }}</td>
+            <td class="small">{{ stage.state }}</td>
+            <td class="small">{{ stage.paymentMethod }}</td>
+            <td class="small">{{ stage.whenWasCreated | date: 'dd.MM.yyyy'}}</td>
+            <td class="small">{{ stage.deliveryTime | date: 'dd.MM.yyyy'}}</td>
+            <td class="small" style="font-size:10px!important;">{{ stage.deliveryNotes }}</td>
+            <td class="small" style="font-size:10px!important;">{{ stage.paymentNotes }}</td>
+            <td class="small">{{ stage.isCompleted == true ? 'Evet':'Hayır'  }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+  
+  </div>
+  </section>
+  
+  
+  <section class="a4-page" *ngIf="printWhat == 2">
+    <div class="row special-row">
+      <div class="col special-col">
+        <div class="row">
+          <div class="col">
+            <h4>Saygın Mobilya</h4>
+            <h6>SAYGIN DEMİRDELEN</h6>
+            <p>Telefon: 0286 213 40 75</p>
+            <p class="p-0 m-0">E-posta: saygindemirdelen@gmail.com</p>
+            <p class="p-0">Barbaros Mah. Atatürk Cad. Barbaros Evleri <br/> A Blok, No: 131/A Merkez, Çanakkale</p>
+          </div>
+          <div class="col">
+            <h5>Sipariş ve Bilgilendirme Fişi</h5>
+            <hr>
+            Fiş Id/No: <h6>{{this.delivery.stageId}}</h6>
+            <p>Tarih: {{this.delivery.whenWasCreated}}</p>
+            <p>Müşteri: {{this.delivery.customerName}}</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Ürün Adı</th>
+                  <th>Cinsi</th>
+                  <th>Fiyat</th>
+                  <th>Adet</th>
+                  <th>Toplam</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let satir of satirlar">
+                  <td>{{satir.id}}</td>
+                  <td>{{satir.itemStageName}}</td>
+                  <td>{{satir.itemStageType}}</td>
+                  <td>{{satir.itemStagePrice}} ₺</td>
+                  <td>{{satir.itemStageAmount}} adet</td>
+                  <!--Yoksa olmuyordu böyle yaptık-->
+                  <td>{{satir.itemStageTotal> satir.itemStagePrice ? satir.itemStageTotal : " "}} ₺</td>
+                </tr>
+              </tbody>
+            </table>
+          
+            <table class="table table-sm table-bordered m-0">
+              <tbody>
+                <tr>
+                  <td>
+                    <ng-container *ngIf="toplamIskonto > 0"><small>{{toplamIskonto}} ₺ indirim yapıldı. </small><del>  {{toplamFiyat}} ₺  </del>   İndirimli fiyat <b>{{toplamFiyat-toplamIskonto}} ₺</b>
+                    </ng-container>
+                    <ng-container *ngIf="toplamIskonto == 0"> Toplam fiyat: <b>{{toplamFiyat}} ₺</b>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <h6>Teslim Eden</h6>
+            Saygın Demirdelen
+          </div>
+          <div class="col">
+            <h6>Teslim Alan</h6>
+           
+            {{this.delivery.customerName}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <img src="https://productimages.hepsiburada.net/s/25/500/10102729932850.jpg" width="250" height="250">
+          </div>
+          <div class="col pt-5">
+            <h4>Saygın Mobilya'dan alışveriş yaptığınız için teşekkür ederiz.</h4>
+            <hr>
+            <h6>"Sevdiklerinizle daha mutlu vakit geçirmeniz için memnuniyet odaklı, ihtiyatlı şekilde çalışıyoruz. Her zaman yanınızdayız."</h6>
+            <i>İndirimli fiyatlar ve Yeni ürünler için bizi sosyal medyada takip etmeyi unutmayın!</i>
+          </div>
+          <div class="col-2"></div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row special-row">
+      <div class="col special-col"></div>
+    </div>
+  </section>
+
+  <section *ngIf="printWhat == 3">
+    <div class="row">
+      <div class="col">
+        <ng-container *ngFor="let item of arac1teslimatlar">
+          <hr>
+          <small><b>{{item.state}}:  </b></small>
+          <small> {{MainItemNameEdit(item.itemName)}} </small>
+          <small> <b> //</b> {{item.paymentNotes}} </small> 
+          <small><b> // Müşteri: </b> </small>
+          <small> {{item.customerName}} </small>
+          <small> ( {{item.phone}} ) </small>
+          <small><b> // Adres: </b> {{item.address}} </small>
+          <small><b> // Not: </b></small>
+          <small> {{item.deliveryNotes}} </small>
+
+        </ng-container>
+      </div>
+    </div>
+<img src="https://webstockreview.net/images/cut-clipart-dashed-line-8.png" width="100%">
+    <div class="row">
+      <div class="col">
+        <ng-container *ngFor="let item of arac2teslimatlar">
+          <hr>
+          <small><b>{{item.state}}:  </b></small>
+          <small> {{MainItemNameEdit(item.itemName)}} </small>
+          <small> <b> //</b> {{item.paymentNotes}} </small> 
+          <small><b> // Müşteri: </b> </small>
+          <small> {{item.customerName}} </small>
+          <small> ( {{item.phone}} ) </small>
+          <small><b> // Adres: </b> {{item.address}} </small>
+          <small><b> // Not: </b></small>
+          <small> {{item.deliveryNotes}} </small>
+
+        </ng-container>
+      </div>
+    </div>
+  </section>

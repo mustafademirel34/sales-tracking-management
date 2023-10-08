@@ -1,0 +1,50 @@
+<section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="card-body p-md-5 mx-md-4">
+  
+                  <div class="text-center">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                      style="width: 185px;" alt="logo">
+                    <h4 class="mt-1 mb-5 pb-1">Reel Login</h4>
+                    <hr>
+                  </div>
+  
+                  <form (submit)="login()">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form2Example11">Kullanıcı Adı</label>
+                      <input type="text" id="username" name="username" class="form-control bg-white p-0" disabled="" value="Saygın Demirdelen"/>
+                    </div>
+  
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form2Example22">Şifre</label>
+                      <input type="password"  id="password" name="password" [(ngModel)]="password" class="form-control bg-secondary" />
+  
+                    </div>
+  
+                    <div class="d-flex align-items-center justify-content-center mt-5 pb-4">
+                      <button type="button" class="btn btn-outline-danger" (click)="login()">giriş yap</button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+              </div>
+              <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <h3 class="mb-4 text-black">Saygın Mobilya</h3>
+                  <p class="mb-0 text-black">İş takip ve yönetim, veritabanı kontrol ve servis hizmeti. Geliştirilme aşamasındadır. Build at: 2023-06-19T01:14:51.245Z Hash: 4f30fa3c80446f60 - Time: 246ms, Compiled successfully.
+                    ✔ Browser application bundle generation complete.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

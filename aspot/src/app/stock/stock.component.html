@@ -1,0 +1,201 @@
+<div class="row" >
+
+
+
+
+  <div class="col">
+      <div class="card shadow-lg">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn  btn-light btn-sm m-1 py-2" (click)="AnasayfayaGit()">
+              <div class="d-flex">
+                <img src="../../assets/icons/ok.svg" width="20">
+                <span class="px-1">Anasayfa</span>
+              </div>
+            </button>
+            <button type="button" class="btn  btn-light btn-sm m-1 py-2" >
+              <div class="d-flex">
+                <img src="../../assets/icons/ok.svg" width="20">
+                <span class="px-1">Değişiklikleri Geri Al</span>
+              </div>
+            </button>
+            <button type="button" class="btn  btn-light btn-sm m-1 py-2" >
+              <div class="d-flex">
+                <img src="../../assets/icons/ok.svg" width="20">
+                <span class="px-1">Güncelle</span>
+              </div>
+            </button>
+           </div>
+            </div>
+
+
+
+
+
+            <div class="card-body">
+
+
+<!-- Component HTML şablonu -->
+<div class="filter-section d-flex align-items-center">
+  <input class="form-control me-2" type="text" [(ngModel)]="searchText" placeholder="İsim Ara" (keyup)="filterTableData()">
+  <select class="form-select me-2" [(ngModel)]="selectedCategory" (change)="filterTableData()">
+    <option value="">Tüm Kategoriler</option>
+    <option *ngFor="let category of categoryOptions" [value]="category">{{ category }}</option>
+  </select>
+  <select style="font-weight: 100px!important;" class="form-select me-2" [(ngModel)]="selectedHome" (change)="filterTableData()">
+    <option value="">Tüm Depolar</option>
+    <option *ngFor="let home of homeOptions" [value]="home">{{ home }}</option>
+  </select>
+  <div class="input-group me-2">
+    <input class="form-control" type="number" [(ngModel)]="priceRange.min" placeholder="Min Fiyat" (input)="filterTableData()">
+    <span class="input-group-text">-</span>
+    <input class="form-control" type="number" [(ngModel)]="priceRange.max" placeholder="Max Fiyat" (input)="filterTableData()">
+  </div>
+  <div class="input-group">
+    <input class="form-control" type="number" [(ngModel)]="amountRange.min" placeholder="Min Adet" (input)="filterTableData()">
+    <span class="input-group-text">-</span>
+    <input class="form-control" type="number" [(ngModel)]="amountRange.max" placeholder="Max Adet" (input)="filterTableData()">
+  </div>
+  <button class="btn btn-secondary ms-2" (click)="clearFilters()">Filtreyi Temizle</button>
+</div>
+
+
+
+
+
+<hr>
+
+<div class="row">
+  <div class="col-8">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Ürün</th>
+          <th scope="col">Kategori</th>
+          <th scope="col">Adet</th>
+          <th scope="col">Fiyat</th>
+          <th scope="col">Depo</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of filteredTableData; let i = index">
+          <tr>
+            <th scope="row">{{ item.productId }}</th>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.productCategory }}</td>
+            <td>{{ item.productAmount }}</td>
+            <td>{{ item.productPrice }}</td>
+            <td>{{ item.productHome }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="editProduct(i)" data-bs-toggle="modal" data-bs-target="#editModal">Düzenle</button>
+            </td>
+          </tr>
+          <tr *ngIf="isEditing(i)">
+            <td colspan="7">
+           
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-4">
+    <h5 class="mb-4">Geçmiş</h5>
+    <table class="table table-bordered table-sm">
+      <thead>
+
+      </thead>
+      <tbody>
+        <tr>05/04/2023 tarihinde (Çarşamba) Atatürk Depodan Müze Depoya 45 adet geçirilmiş.</tr>
+        <tr>08/04/2023 tarihinde (Cumartesi) 6 Adet Satış Gerçekleştirilmiş.</tr>
+        <tr>10/04/2023 tarihinde (Pazartesi) 16 Adet ürün eklendi > Müze Depo</tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+
+
+            </div>
+
+
+            </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            </div>
+            
+
+
+
+
+
+
+
+            
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-top">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Düzenle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm">
+          <div class="form-group">
+            <label>Ürün Adı</label>
+            <input type="text" formControlName="productName" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Kategori</label>
+            <select formControlName="productCategory" class="form-control">
+              <option value="Mobilya">Mobilya</option>
+              <option value="Elektronik">Elektronik</option>
+              <option value="Spor">Spor</option>
+              <option value="Aksesuar">Aksesuar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Adet</label>
+            <input type="number" formControlName="productAmount" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Fiyat</label>
+            <input type="number" formControlName="productPrice" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Depo</label>
+            <select formControlName="productHome" class="form-control">
+              <option value="Depo A">Depo A</option>
+              <option value="Depo B">Depo B</option>
+              <option value="Depo C">Depo C</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges(ilgiliDuzenle);" data-bs-dismiss="modal">Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>

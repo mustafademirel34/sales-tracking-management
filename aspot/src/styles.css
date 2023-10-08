@@ -1,0 +1,20 @@
+.blur-image {
+    position: relative;
+    padding:0;
+    margin:0;
+  }
+  
+  .blur-image:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    background: url('https://media.istockphoto.com/id/1371218145/vector/horizontal-soft-pink-blue-and-white-coloured-vector-multi-colored-backgrounds-like-water.jpg?s=612x612&w=0&k=20&c=OGBztji8m_o7SqQ9HWVrrmjEiCbUIDszqzeLeVe5gXI=') repeat;
+    background-size: cover;
+    filter: blur(10px); /* Burada sisli görünümü ayarlamak için blur miktarını değiştirebilirsiniz */
+    width: 100%;
+    height: 100vh; /* Ekran yüksekliğine göre ayarlanacak */
+    z-index: -1;
+  }
+

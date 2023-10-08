@@ -1,0 +1,36 @@
+.custom-range {
+  padding-top:15px;
+  width: 60px; /* Range genişliği */
+}
+
+
+
+.rounded-btn {
+    width: 29px;
+    height: 28px;
+    margin:2px;
+  }
+
+.calendar-table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+  }
+  
+  .calendar-table th,
+  .calendar-table td {
+    width: calc(100% / 7);
+    height: auto;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+  }
+  
+  .current-month-day {
+    color: black;
+  }
+  
+  .other-month-day {
+    color: red;
+  }
+  
