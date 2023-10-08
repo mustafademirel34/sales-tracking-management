@@ -8,77 +8,74 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-mustafademirel34-blue)](https://www.linkedin.com/in/mustafademirel34/)
 
 ###### Explanation
-Bu proje, müşterilere belirli eşyaları satma ve müşteriye eşyanın teslim edilmesini takip etme amacı güden bir uygulamadır. Veritabanı olarak Mssql, Backend olarak api servis tercih edilmiştir.
+This project is an application that aims to sell certain items to customers and track the delivery of the items to the customer. Mssql was preferred as the database and API service was preferred as the backend.
 
 <div class="image-container">
-   <img src="https://r.resimlink.com/jAL7_6.png" alt="Resim 1" style="width: 48%; float: left; margin-right: 2%;">
-   <img src="https://r.resimlink.com/J7kSgXoC.png" alt="Resim 2" style="width: 48%;">
+    <img src="https://r.resimlink.com/jAL7_6.png" alt="Image 1" style="width: 48%; float: left; margin-right: 2%;">
+    <img src="https://r.resimlink.com/J7kSgXoC.png" alt="Image 2" style="width: 48%;">
 </div>
 
-## Kullanım Bilgileri
+## Usage Information
 
 
-Ana sayfada aşağıdaki özelliklere erişebilirsiniz:
+On the home page you can access the following features:
 
-- Tüm kayıtları görüntüleme
-- Yeni kayıt oluşturma
-- "Araç" kısmında işaretlendiği üzere yola çıkacak eşyaların listesini çıktı olarak alma
-- Genel veri çıktısını alma
-- Ayarlar ve çıkış butonları
+- View all records
+- Creating a new record
+- Print out the list of items to be shipped as marked in the "Vehicle" section
+- General data output
+- Settings and exit buttons
 
-#### Takvim Sayfası
-Bu sayfa, aylara göre dağılmış, kayıtların aylara göre görüntülenebileceği bir alandır.
+#### Calendar Page
+This page is an area where records can be viewed by month, distributed by month.
 
-#### Stok
-Stok, deneysel bir özelliktir ve şu an için hazır değildir.
+#### Stock
+Stock is an experimental feature and is not ready at this time.
 
-- Takvim girişi
-- Müşterinin telefon numarasına göre kayıtları arama seçeneği
-- Yarın Aktar seçeneği: Gün sonunda tamamlanmamış ve yerine getirilmemiş görevleri yarına aktarır
-- Araç yerleşimleri: Hangi araca çıkarılacağını ve hangi araç tarafından teslim edileceğini gösterir
+- Calendar entry
+- Option to search records by customer's phone number
+- Transfer Tomorrow option: Transfers unfinished and unfulfilled tasks at the end of the day to tomorrow
+- Vehicle placements: Shows which vehicle will be removed and delivered by which vehicle
 
-Ana pencerede üstteki başlık, o esnada hangi içeriğin mevcut olduğunu gösterir. Ayrıca, seçenekler bulunur:
+In the main window, the banner at the top shows what content is currently available. Additionally, there are options:
 
-- "Bugünün kayıtlarını göster" butonu
-- Takvimde ileri ve geri gitme butonları
-- Görevlerin tamamlanma durumuna göre filtreleme (tamamlanmış, tamamlanmamış veya tümü)
-- Aynı anda görüntülenecek kayıt sayısını belirleyen sayı listesi
+- "Show today's recordings" button
+- Buttons to go forward and back in the calendar
+- Filtering tasks by completion status (completed, incomplete or all)
+- Number list that determines the number of records to be displayed simultaneously
 
-### Kayıtların Görüntülenmesi
+### Viewing Records
 
-Kayıtlar, filtre ve seçeneklere göre görüntülenir. Bir görev, ek bilgilere sahiptir ve bu ek bilgilere görevin ayrıntılarına tıklanarak erişilebilir. Bir kayıt veya göreve tıkladığınızda, detay bilgilerini içeren sayfaya erişirsiniz. Bu sayfada müşteri, satış ve müdahale bilgilerini görebilirsiniz.
+Records are displayed according to filters and options. A task has additional information, which can be accessed by clicking on the task's details. When you click on a record or task, you access the page with detailed information. On this page you can see customer, sales and intervention information.
 
-## Detay Sayfası
+### Detail Page
 
-Bir kayıt veya göreve tıkladığınızda, detay bilgilerini içeren sayfaya erişirsiniz. Yeni kayıt oluşturduğunuzda bu bilgiler boş ve doldurulabilir olacaktır.
+When you click on a record or task, you access the page with detailed information. When you create a new record, this information will be blank and fillable.
 
-### Müşteri Bilgileri
+### Customer Information
 
-Sol kısımda müşteri hakkında bilgileri doldurup kayıt açtığınızda müşteri, telefon numarası üzere kayıt altına alınacaktır.
+When you fill in the information about the customer on the left and open a record, the customer will be recorded as their phone number.
 
-- **Müşteri Ara:** Bu buton ile girdiğiniz telefon numarasına ait müşteri olup olmadığını kontrol edebilirsiniz.
+- **Call Customer:** With this button, you can check whether there is a customer for the phone number you entered.
 
-### Satış Bilgileri
+### Sales Information
 
-Orta kısımda, Satış için eşya bilgileri yer alacaktır. Ürün, cins bilgilerinizi girdiğinizde bir fiyat belirlemek için (Fiyat(x)Adet)-İskonto bilgisinden yararlanabilirsiniz.
+In the middle, there will be item information for sale. When you enter your product type information, you can use the (Price(x)Quantity)-Discount information to determine a price.
 
-- **Birden Fazla Kayıt:** Birden fazla kayıt ekleyebilir veya silebilirsiniz.
-- **Ödeme Bilgisi:** Ödemenin bir kısmını alabilir ve geri kalan ödeme bilgisini görev teslimi sırasında "ücret alınacaktır" bilgisi ile bırakabilirsiniz.
+- **Multiple Records:** You can add or delete multiple records.
+- **Payment Information:** You can take part of the payment and leave the remaining payment information with the information "fee will be charged" during the task delivery.
 
-### Görev Bilgileri
+### Mission Information
 
-Sağ kısımda, görevin tamamlanma bilgisi, Güncelleme, fiş bilgisi çıktısı alma, görevi silme ve erteleme bilgisi yer alacaktır. Buradaki butonlar üzerinde bulunan bilgiler olduğu gibi yerine gelmelidir.
+On the right side, there will be information about task completion, updating, printing receipt information, deleting the task and postponing it. The information on the buttons here should appear exactly as it is.
 
-- **Sadece "Tamamlandı" İşaretlendiğinde:** Kayıt üzerinde sonradan bir değişiklik yapılamaz, ancak silinebilir.
+- **Only When "Completed" is Marked:** No changes can be made to the record later, but it can be deleted.
 
-- **Yeni Kayıt:** Yeni kayıt sırasında sadece "Yeni Ekle" butonu bulunacaktır.
-
-
-#### Arka Plan Bilgileri
-
-- Kullanıcı adı ve şifre seçeneği mevcuttur (varsayılan olarak kapalıdır).
-- Websitesi, API'ya ulaşamazsa 500 hata bilgisi gösterir.
-- Sayfa bulunamazsa 404 hatası gösterir.
+- **New Registration:** During the new registration, there will be only the "Add New" button.
 
 
+#### Background Information
 
+- Username and password option is available (off by default).
+- If the website cannot reach the API, it displays 500 error information.
+- If the page is not found, it shows a 404 error.
